@@ -55,92 +55,12 @@ function safeDelete(filePath) {
 
 function baseRules() {
   return `
-You are a senior professional real estate photo editor.
-
-STRICT MLS-SAFE RULES:
-- Keep the property accurate.
-- Do not add or remove rooms, walls, doors, windows, furniture, pools, appliances, landscaping, views, or permanent features.
-- Do not change architecture, roofline, lot shape, camera angle, or surroundings.
-- Preserve realistic perspective and straight vertical lines.
-- Make the photo realistic, premium, clean, bright, and human-editor quality.
-- No CGI, cartoon, fantasy, fake HDR, plastic smoothing, or overprocessed look.
-- Do not misrepresent the property.
-`;
-}
-
-function batchColorMatching() {
-  return `
-BATCH COLOR MATCHING:
-All uploaded photos must look edited by the same human real estate editor.
-Keep consistent brightness, contrast, white balance, warmth, saturation, sharpness, shadow depth, sky tone, and HDR finish.
-Do not make one image overly warm and another overly cool.
-Use a clean premium real estate editing style across the entire batch.
-`;
-}
-
-function autoDetectInteriorExterior() {
-  return `
-AUTO INTERIOR / EXTERIOR DETECTION:
-If the photo is interior:
-- Brighten naturally.
-- Correct white balance.
-- Clean whites and neutral walls.
-- Balance window highlights.
-- Recover window detail where possible.
-- Lift shadows without making the image flat.
-- Sharpen flooring, cabinets, fixtures, and room details.
-- Keep the room realistic.
-
-If the photo is exterior:
-- Improve curb appeal.
-- Clean or improve visible sky.
-- Enhance lawn, driveway, walls, roof, and exterior detail.
-- Control harsh shadows and blown highlights.
-- Preserve roofline, landscaping, mountains, trees, fences, and property edges.
-`;
-}
-
-function automaticSkyMasking() {
-  return `
-AUTOMATIC SKY MASKING:
-If sky is visible, improve or replace ONLY the sky.
-Use a realistic luxury real estate sky.
-Preserve rooflines, trees, power lines, mountains, chimneys, fences, poles, and property edges.
-No sky bleeding into the home.
-No fake-looking clouds.
-No warped roofline.
-Do not change the house or surroundings.
-`;
-}
-
-function twilightLightingZones() {
-  return `
-REAL TWILIGHT LIGHTING ZONES:
-Create realistic dusk lighting zones:
-- Sky: smooth blue/purple sunset gradient, natural dusk mood.
-- Windows: warm glow only where real windows exist.
-- Exterior lights: subtle warmth only where believable.
-- Yard/driveway: slightly darker evening feel but still detailed.
-- House body: natural evening contrast, not too dark.
-- Shadows: soft and realistic.
-
-Do not add fake windows.
-Do not add fake lights where they do not belong.
-Do not change architecture.
-Do not make the image fantasy, CGI, or overly dramatic.
-`;
-}
-
-function windowPullInstructions() {
-  return `
-WINDOW PULL EDIT:
-Recover window detail naturally.
-Reduce blown highlights.
-Balance indoor exposure with outdoor view.
-Keep window frames, blinds, reflections, and outside view believable.
-Do not fake a view that was not there.
-Do not darken the interior too much.
-Make it look like a professional real estate window pull.
+Professional real estate photo edit.
+Keep property accurate.
+Do not add or remove rooms, walls, doors, windows, furniture, pools, appliances, landscaping, views, or permanent features.
+Do not change architecture, roofline, lot shape, camera angle, or surroundings.
+Keep image realistic, MLS-safe, clean, premium, and natural.
+No cartoon, CGI, fantasy, fake objects, fake rooms, or overprocessed look.
 `;
 }
 
@@ -150,157 +70,149 @@ function promptForMode(mode) {
   const prompts = {
     standard: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-
-Create a professional HDR-style real estate enhancement.
-Fix exposure, lighting, white balance, color, clarity, sharpness, shadows, and highlights.
-Make it bright, natural, realistic, clean, and listing-ready.
+Create a clean HDR-style real estate enhancement.
+Auto-detect interior or exterior.
+If interior: brighten naturally, clean white balance, recover windows, lift shadows, sharpen floors and fixtures.
+If exterior: improve curb appeal, sky tone, lawn, driveway, shadows, highlights, and architectural detail.
+Keep color natural and professional.
 `,
 
     hdr: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-${windowPullInstructions()}
-
-Create a premium bracketed-HDR style real estate edit.
-Recover highlights, lift shadows naturally, balance windows, correct color cast, sharpen detail, and make it look like a human HDR editor finished it.
+Create realistic premium HDR real estate editing.
+Recover highlights, lift shadows, balance exposure, clean color cast, sharpen details, and make it look like a human HDR editor finished it.
+Do not make it fake or oversaturated.
+Keep whites clean and windows controlled.
 `,
 
     mls: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-${windowPullInstructions()}
-
-Create an MLS-ready professional edit.
-Use natural HDR, clean whites, balanced exposure, controlled highlights, clear shadows, realistic color, and sharp detail.
-Keep it accurate and listing-safe.
+Create an MLS-ready edit.
+Natural HDR, clean whites, balanced exposure, controlled highlights, clear shadows, realistic color, sharp detail, and professional real estate finish.
 `,
 
     interior: `
 ${baseRules()}
-${batchColorMatching()}
-${windowPullInstructions()}
-
-Professional interior real estate edit.
-Brighten naturally, fix color cast, clean whites, recover window detail, lift shadows, sharpen flooring and fixtures, and keep the room realistic.
+Interior real estate edit.
+Brighten the room naturally.
+Correct white balance.
+Clean whites and neutral walls.
+Recover window brightness naturally.
+Lift shadows without flattening the image.
+Sharpen flooring, cabinets, fixtures, and room detail.
 Do not add furniture or change layout.
 `,
 
     exterior: `
 ${baseRules()}
-${batchColorMatching()}
-${automaticSkyMasking()}
-
-Professional exterior real estate edit.
-Improve curb appeal, sky realism, lawn color, driveway brightness, architectural detail, shadows, highlights, and overall clarity.
-Keep property accurate.
+Exterior real estate edit.
+Improve curb appeal, sky realism, lawn color, driveway brightness, house detail, shadows, highlights, and clarity.
+Keep roofline, trees, mountains, fences, and property edges accurate.
 `,
 
     sky: `
 ${baseRules()}
-${batchColorMatching()}
-${automaticSkyMasking()}
-
-Replace or improve ONLY the sky with a realistic clean luxury real estate sky.
-Preserve all property edges perfectly.
-Make it look natural, not fake.
+Improve or replace only the sky with a realistic clean real estate sky.
+Keep rooflines, trees, power lines, mountains, fences, poles, and property edges untouched.
+No sky bleeding into the house.
+No fake clouds.
 `,
 
     twilight: `
 ${baseRules()}
-${batchColorMatching()}
-${automaticSkyMasking()}
-${twilightLightingZones()}
-
-Convert this exterior real estate photo into a realistic premium twilight image.
+Create a realistic premium twilight real estate edit.
+Natural dusk sky with blue and purple evening gradient.
+Warm glow only in real windows.
+Subtle exterior lighting only where believable.
+Slightly darker yard and driveway while keeping detail visible.
+Natural evening contrast on the home.
+No fake windows.
+No fake lights.
+No fantasy sky.
 Make it look like a professional human twilight editor created it.
 `,
 
     luxury: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-${automaticSkyMasking()}
-${windowPullInstructions()}
-
-Luxury magazine-level real estate edit.
-Premium HDR balance, rich but realistic contrast, elegant color grade, clean whites, crisp detail, and high-end polish.
+Luxury real estate magazine edit.
+Premium HDR balance, elegant color grade, clean whites, realistic contrast, crisp detail, polished finish, and high-end listing quality.
+Keep it natural and believable.
 `,
 
     window: `
 ${baseRules()}
-${batchColorMatching()}
-${windowPullInstructions()}
-
-Focus mainly on professional window pull recovery while keeping the full image natural, bright, and realistic.
+Professional window pull edit.
+Recover outside window detail naturally.
+Reduce blown highlights.
+Balance indoor exposure with outside view.
+Keep window frames, blinds, reflections, and view believable.
+Do not fake a view.
+Do not darken the room too much.
 `,
 
     denoise: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-
-Reduce noise, compression artifacts, blur, muddy shadows, and grain.
-Keep detail natural, not plastic.
+Reduce noise, grain, compression artifacts, blur, and muddy shadows.
+Keep natural detail and avoid plastic smoothing.
 `,
 
     pro: `
 ${baseRules()}
-${batchColorMatching()}
-${autoDetectInteriorExterior()}
-${automaticSkyMasking()}
-${windowPullInstructions()}
-
-Full professional real estate edit:
-- HDR polish
-- Window pull recovery
-- Natural color correction
-- Clean white balance
-- Sharpen detail
-- Improve sky if exterior
-- Improve curb appeal if exterior
-- Keep everything realistic and MLS-safe
+Full professional real estate edit.
+HDR polish.
+Window pull recovery.
+Natural white balance.
+Clean color correction.
+Sharpen detail.
+Improve sky if exterior.
+Improve curb appeal if exterior.
+Make it look like a paid human real estate editor finished it.
 `
   };
 
   return prompts[m] || prompts.standard;
 }
 
-async function prepareImage(inputPath) {
-  const preparedName = `prep-${Date.now()}-${Math.floor(Math.random() * 999999)}.png`;
-  const preparedPath = path.join(UPLOAD_DIR, preparedName);
+async function makeOpenAIPng(inputPath) {
+  const pngPath = path.join(
+    UPLOAD_DIR,
+    `openai-${Date.now()}-${Math.floor(Math.random() * 999999)}.png`
+  );
 
   await sharp(inputPath)
     .rotate()
     .resize({
-      width: 1600,
-      height: 1200,
-      fit: "inside",
-      withoutEnlargement: true
+      width: 1024,
+      height: 1024,
+      fit: "contain",
+      background: { r: 255, g: 255, b: 255, alpha: 1 }
     })
     .png()
-    .toFile(preparedPath);
+    .toFile(pngPath);
 
-  return preparedPath;
+  return pngPath;
 }
 
 async function editImage(imagePath, prompt) {
-  const result = await openai.images.edit({
-    model: process.env.IMAGE_MODEL || "dall-e-2",
-    image: fs.createReadStream(imagePath),
-    prompt,
-    size: "1024x1024",
-    response_format: "b64_json"
-  });
+  const pngPath = await makeOpenAIPng(imagePath);
 
-  if (!result?.data?.[0]?.b64_json) {
-    throw new Error("OpenAI did not return an edited image.");
+  try {
+    const result = await openai.images.edit({
+      model: "dall-e-2",
+      image: fs.createReadStream(pngPath),
+      prompt,
+      size: "1024x1024",
+      response_format: "b64_json"
+    });
+
+    if (!result?.data?.[0]?.b64_json) {
+      throw new Error("OpenAI did not return an edited image.");
+    }
+
+    return result.data[0].b64_json;
+  } finally {
+    safeDelete(pngPath);
   }
-
-  return result.data[0].b64_json;
 }
 
 function saveBase64Image(base64) {
@@ -331,15 +243,10 @@ app.get("/health", (req, res) => {
     success: true,
     status: "healthy",
     openai_key_loaded: Boolean(process.env.OPENAI_API_KEY),
-    image_model: process.env.IMAGE_MODEL || "gpt-image-1",
+    image_model: "dall-e-2",
     enfuse_path: process.env.ENFUSE_PATH || "C:\\enfuse\\enfuse.exe"
   });
 });
-
-// =======================
-// MAIN FRONTEND ROUTE
-// Your current frontend calls this route.
-// =======================
 
 app.post("/enhance-pro", upload.array("photos", 8), async (req, res) => {
   const files = req.files || [];
@@ -365,13 +272,10 @@ app.post("/enhance-pro", upload.array("photos", 8), async (req, res) => {
 
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
-    let preparedPath = null;
 
     try {
-      preparedPath = await prepareImage(file.path);
-      const editedBase64 = await editImage(preparedPath, prompt);
+      const editedBase64 = await editImage(file.path, prompt);
       const outputName = saveBase64Image(editedBase64);
-
       images.push(getPublicUrl(req, outputName));
     } catch (err) {
       console.error("Photo failed:", err);
@@ -381,7 +285,6 @@ app.post("/enhance-pro", upload.array("photos", 8), async (req, res) => {
       });
     } finally {
       safeDelete(file.path);
-      safeDelete(preparedPath);
     }
   }
 
@@ -402,12 +305,6 @@ app.post("/enhance-pro", upload.array("photos", 8), async (req, res) => {
   });
 });
 
-// =======================
-// TRUE HDR WITH ENFUSE
-// Works locally on your PC.
-// Render will only work if Enfuse exists on Render.
-// =======================
-
 app.post("/true-hdr", upload.array("photos", 5), async (req, res) => {
   const files = req.files || [];
 
@@ -421,20 +318,17 @@ app.post("/true-hdr", upload.array("photos", 5), async (req, res) => {
   const enfusePath = process.env.ENFUSE_PATH || "C:\\enfuse\\enfuse.exe";
   const outputName = `hdr-${Date.now()}-${Math.floor(Math.random() * 999999)}.jpg`;
   const outputPath = path.join(OUTPUT_DIR, outputName);
-
   const inputPaths = files.map((f) => `"${path.resolve(f.path)}"`).join(" ");
   const command = `"${enfusePath}" -o "${outputPath}" ${inputPaths}`;
 
-  exec(command, async (err, stdout, stderr) => {
+  exec(command, (err, stdout, stderr) => {
     files.forEach((f) => safeDelete(f.path));
 
     if (err) {
       console.error("Enfuse error:", err);
-      console.error("stderr:", stderr);
-
       return res.status(500).json({
         success: false,
-        error: "HDR merge failed. Make sure Enfuse is installed and ENFUSE_PATH is correct.",
+        error: "HDR merge failed. Enfuse must be installed locally or available on server.",
         details: stderr || err.message
       });
     }
@@ -448,13 +342,8 @@ app.post("/true-hdr", upload.array("photos", 5), async (req, res) => {
   });
 });
 
-// =======================
-// PRO EDIT SINGLE PHOTO
-// =======================
-
 app.post("/pro-edit", upload.single("photo"), async (req, res) => {
   const file = req.file;
-  let preparedPath = null;
 
   if (!file) {
     return res.status(400).json({
@@ -464,9 +353,7 @@ app.post("/pro-edit", upload.single("photo"), async (req, res) => {
   }
 
   try {
-    preparedPath = await prepareImage(file.path);
-    const prompt = promptForMode("pro");
-    const editedBase64 = await editImage(preparedPath, prompt);
+    const editedBase64 = await editImage(file.path, promptForMode("pro"));
     const outputName = saveBase64Image(editedBase64);
 
     res.json({
@@ -481,17 +368,11 @@ app.post("/pro-edit", upload.single("photo"), async (req, res) => {
     });
   } finally {
     safeDelete(file.path);
-    safeDelete(preparedPath);
   }
 });
 
-// =======================
-// TWILIGHT PRO SINGLE PHOTO
-// =======================
-
 app.post("/twilight-pro", upload.single("photo"), async (req, res) => {
   const file = req.file;
-  let preparedPath = null;
 
   if (!file) {
     return res.status(400).json({
@@ -501,9 +382,7 @@ app.post("/twilight-pro", upload.single("photo"), async (req, res) => {
   }
 
   try {
-    preparedPath = await prepareImage(file.path);
-    const prompt = promptForMode("twilight");
-    const editedBase64 = await editImage(preparedPath, prompt);
+    const editedBase64 = await editImage(file.path, promptForMode("twilight"));
     const outputName = saveBase64Image(editedBase64);
 
     res.json({
@@ -518,17 +397,11 @@ app.post("/twilight-pro", upload.single("photo"), async (req, res) => {
     });
   } finally {
     safeDelete(file.path);
-    safeDelete(preparedPath);
   }
 });
 
-// =======================
-// WINDOW PULL SINGLE PHOTO
-// =======================
-
 app.post("/window-pull", upload.single("photo"), async (req, res) => {
   const file = req.file;
-  let preparedPath = null;
 
   if (!file) {
     return res.status(400).json({
@@ -538,9 +411,7 @@ app.post("/window-pull", upload.single("photo"), async (req, res) => {
   }
 
   try {
-    preparedPath = await prepareImage(file.path);
-    const prompt = promptForMode("window");
-    const editedBase64 = await editImage(preparedPath, prompt);
+    const editedBase64 = await editImage(file.path, promptForMode("window"));
     const outputName = saveBase64Image(editedBase64);
 
     res.json({
@@ -555,7 +426,6 @@ app.post("/window-pull", upload.single("photo"), async (req, res) => {
     });
   } finally {
     safeDelete(file.path);
-    safeDelete(preparedPath);
   }
 });
 
