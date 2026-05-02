@@ -289,10 +289,11 @@ async function prepareImage(inputPath) {
 
 async function editImage(imagePath, prompt) {
   const result = await openai.images.edit({
-    model: process.env.IMAGE_MODEL || "gpt-image-1",
+    model: process.env.IMAGE_MODEL || "dall-e-2",
     image: fs.createReadStream(imagePath),
     prompt,
-    size: process.env.IMAGE_SIZE || "1536x1024"
+    size: "1024x1024",
+    response_format: "b64_json"
   });
 
   if (!result?.data?.[0]?.b64_json) {
